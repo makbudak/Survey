@@ -1,0 +1,129 @@
+﻿@page "/QuestionCategories"
+
+@using BlazorLearn.Services
+@using BlazorLearn.Models.Entities
+
+@inject IQuestionCategoryService questionService
+
+<div class="row mb-2">
+    <div class="col">
+        <h5>Soru Kategorileri</h5>
+    </div>
+    <div class="col">
+        <Button class="float-right" Type="primary" Icon="plus" @onclick="Add">Ekle</Button>
+    </div>
+</div>
+
+@if (questionCategories == null)
+{
+    <p><em>Yükleniyor...</em></p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Adı</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in questionCategories)
+            {
+                <tr>
+                    <td>
+                        <Button @onclick="() =>Edit(item)">Düzenle</Button>
+                    </td>
+                    <td>@item.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@{
+    RenderFragment footer = @<Template>
+        <Button OnClick="@Cancel" @key="@("back")">Kapat</Button>
+        <Button OnClick="@Save" @key="@("submit")"
+                Type="primary">
+            Kaydet
+        </Button>
+    </Template>;
+}
+
+<Modal Title="@modalTitle"
+       Visible="@modalVisible"
+       OnOk="@Save"
+       OnCancel="@Cancel"
+       Footer="@footer">
+    <EditForm EditContext="@editContext" OnValidSubmit="@Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label>Kategori Adı</label>
+            <Input Placeholder="Kategori Adı" @bind-Value="questionCategory.Name" />
+        </div>
+        <div class="form-group">
+            <label>Aktif</label>
+            <Switch Checked="questionCategory.IsActive" />
+        </div>
+    </EditForm>
+</Modal>
+
+
+
+@code {
+    private QuestionCategory questionCategory = new QuestionCategory();
+    private EditContext editContext;
+
+    string modalTitle = string.Empty;
+    bool modalVisible = false;
+
+    private IReadOnlyList<QuestionCategory> questionCategories;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(questionCategory);
+        LoadData();
+    }
+
+    private void LoadData()
+    {
+        questionCategories = questionService.Get();
+    }
+
+    private void Add(MouseEventArgs e)
+    {
+        modalVisible = true;
+        modalTitle = "Soru Kategorisi Ekle";
+    }
+
+    private void Edit(QuestionCategory model)
+    {
+        modalVisible = true;
+        modalTitle = "Soru Kategorisi Düzenle";
+        questionCategory = model;
+    }
+
+    private void Save()
+    {
+        if (editContext.Validate())
+        {
+            if (questionCategory.Id == 0)
+            {
+                questionService.Add(questionCategory);
+            }
+            else
+            {
+                questionService.Edit(questionCategory);
+            }
+            modalVisible = false;
+            LoadData();
+        }
+    }
+
+    private void Cancel(MouseEventArgs e)
+    {
+        modalVisible = false;
+    }
+}
