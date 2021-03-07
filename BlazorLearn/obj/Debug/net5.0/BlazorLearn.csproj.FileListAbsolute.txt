@@ -90,4 +90,3 @@ D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\obj\Debug\net5.0\BlazorLearn.dll
 D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\obj\Debug\net5.0\ref\BlazorLearn.dll
 D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\obj\Debug\net5.0\BlazorLearn.pdb
 D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\obj\Debug\net5.0\BlazorLearn.genruntimeconfig.cache
-D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\obj\Debug\net5.0\BlazorLearn.csprojAssemblyReference.cache

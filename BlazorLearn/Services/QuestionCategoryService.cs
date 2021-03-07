@@ -1,13 +1,13 @@
+using BlazorLearn.Helper;
 using BlazorLearn.Models;
+using BlazorLearn.Models.Dto;
 using BlazorLearn.Models.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BlazorLearn.Services
 {
     public interface IQuestionCategoryService
     {
-        List<QuestionCategory> Get();
+        PagedResult<QuestionCategory> Get(int page, int pageSize = 5);
         void Add(QuestionCategory model);
         void Edit(QuestionCategory model);
 
@@ -21,16 +21,16 @@ namespace BlazorLearn.Services
             this.context = context;
         }
 
-        public List<QuestionCategory> Get()
+        public PagedResult<QuestionCategory> Get(int page, int pageSize = 5)
         {
-            var list = context.QuestionCategories.ToList();
+            var list = context.QuestionCategories.GetPaged(page, pageSize);
             return list;
         }
 
         public void Add(QuestionCategory model)
         {
-           context.QuestionCategories.Add(model);
-           context.SaveChanges();
+            context.Add(model);
+            context.SaveChanges();
         }
 
         public void Edit(QuestionCategory model)

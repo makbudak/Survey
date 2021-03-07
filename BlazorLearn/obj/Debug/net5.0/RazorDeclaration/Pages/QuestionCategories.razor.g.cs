@@ -112,15 +112,22 @@ using BlazorLearn.Models.Entities;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 75 "D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\Pages\QuestionCategories.razor"
+#line 68 "D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\Pages\QuestionCategories.razor"
        
-    private QuestionCategory questionCategory = new QuestionCategory();
-    private EditContext editContext;
+    ITable table;
+
+    int pageIndex = 1;
+    int pageSize = 5;
+    int total = 0;
+    bool loading = true;
+
+    QuestionCategory questionCategory = new QuestionCategory();
+    EditContext editContext;
 
     string modalTitle = string.Empty;
     bool modalVisible = false;
 
-    private IReadOnlyList<QuestionCategory> questionCategories;
+    private IList<QuestionCategory> questionCategories;
 
     protected override void OnInitialized()
     {
@@ -130,10 +137,13 @@ using BlazorLearn.Models.Entities;
 
     private void LoadData()
     {
-        questionCategories = questionService.Get();
+        var result = questionService.Get(pageIndex, pageSize);
+        questionCategories = result.Results;
+        total = result.RowCount;
+        loading = false;
     }
 
-    private void Add(MouseEventArgs e)
+    private void Add()
     {
         modalVisible = true;
         modalTitle = "Soru Kategorisi Ekle";
@@ -144,6 +154,17 @@ using BlazorLearn.Models.Entities;
         modalVisible = true;
         modalTitle = "Soru Kategorisi Düzenle";
         questionCategory = model;
+        editContext = new EditContext(model);
+    }
+
+    private void Delete(int id)
+    {
+    }
+
+    private void pageIndexChange(PaginationEventArgs args)
+    {
+        pageIndex = args.PageIndex;
+        LoadData();
     }
 
     private void Save()
@@ -163,7 +184,7 @@ using BlazorLearn.Models.Entities;
         }
     }
 
-    private void Cancel(MouseEventArgs e)
+    private void Cancel()
     {
         modalVisible = false;
     }

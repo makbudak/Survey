@@ -14,32 +14,27 @@
     </div>
 </div>
 
-@if (questionCategories == null)
-{
-    <p><em>Yükleniyor...</em></p>
-}
-else
-{
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Adı</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in questionCategories)
-            {
-                <tr>
-                    <td>
-                        <Button @onclick="() =>Edit(item)">Düzenle</Button>
-                    </td>
-                    <td>@item.Name</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<Table @ref="table"
+       DataSource="@questionCategories"
+       Bordered="true"
+       Total="total"
+       Loading="loading"
+       @bind-PageIndex="pageIndex"
+       @bind-PageSize="pageSize"
+       OnPageIndexChange="pageIndexChange">
+    <ActionColumn Width="100">
+        <Space>
+            <SpaceItem>
+                <Button OnClick="()=>Edit(context)">Düzenle</Button>
+            </SpaceItem>
+            <SpaceItem>
+                <Button Danger OnClick="()=>Delete(context.Id)">Sil</Button>
+            </SpaceItem>
+        </Space>
+    </ActionColumn>
+    <Column @bind-Field="@context.Name" Title="Kategori Adı" />
+</Table>
+
 
 @{
     RenderFragment footer = @<Template>
@@ -70,16 +65,21 @@ else
     </EditForm>
 </Modal>
 
-
-
 @code {
-    private QuestionCategory questionCategory = new QuestionCategory();
-    private EditContext editContext;
+    ITable table;
+
+    int pageIndex = 1;
+    int pageSize = 5;
+    int total = 0;
+    bool loading = true;
+
+    QuestionCategory questionCategory = new QuestionCategory();
+    EditContext editContext;
 
     string modalTitle = string.Empty;
     bool modalVisible = false;
 
-    private IReadOnlyList<QuestionCategory> questionCategories;
+    private IList<QuestionCategory> questionCategories;
 
     protected override void OnInitialized()
     {
@@ -89,10 +89,13 @@ else
 
     private void LoadData()
     {
-        questionCategories = questionService.Get();
+        var result = questionService.Get(pageIndex, pageSize);
+        questionCategories = result.Results;
+        total = result.RowCount;
+        loading = false;
     }
 
-    private void Add(MouseEventArgs e)
+    private void Add()
     {
         modalVisible = true;
         modalTitle = "Soru Kategorisi Ekle";
@@ -103,6 +106,17 @@ else
         modalVisible = true;
         modalTitle = "Soru Kategorisi Düzenle";
         questionCategory = model;
+        editContext = new EditContext(model);
+    }
+
+    private void Delete(int id)
+    {
+    }
+
+    private void pageIndexChange(PaginationEventArgs args)
+    {
+        pageIndex = args.PageIndex;
+        LoadData();
     }
 
     private void Save()
@@ -122,7 +136,7 @@ else
         }
     }
 
-    private void Cancel(MouseEventArgs e)
+    private void Cancel()
     {
         modalVisible = false;
     }
