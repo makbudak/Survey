@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace BlazorLearn.Pages
+namespace Blazor.Survey.Pages
 {
     #line hidden
     using System;
@@ -89,8 +89,22 @@ using AntDesign;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/counter")]
-    public partial class Counter : Microsoft.AspNetCore.Components.ComponentBase
+#nullable restore
+#line 3 "D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\Pages\QuestionCategories.razor"
+using BlazorLearn.Services;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\Pages\QuestionCategories.razor"
+using BlazorLearn.Models.Entities;
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/QuestionCategories")]
+    public partial class QuestionCategories : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -98,18 +112,87 @@ using AntDesign;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 9 "D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\Pages\Counter.razor"
+#line 68 "D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\Pages\QuestionCategories.razor"
        
-    private int currentCount = 0;
+    ITable table;
 
-    private void IncrementCount()
+    int pageIndex = 1;
+    int pageSize = 5;
+    int total = 0;
+    bool loading = true;
+
+    QuestionCategory questionCategory = new QuestionCategory();
+    EditContext editContext;
+
+    string modalTitle = string.Empty;
+    bool modalVisible = false;
+
+    private IList<QuestionCategory> questionCategories;
+
+    protected override void OnInitialized()
     {
-        currentCount++;
+        editContext = new EditContext(questionCategory);
+        LoadData();
+    }
+
+    private void LoadData()
+    {
+        var result = questionService.Get(pageIndex, pageSize);
+        questionCategories = result.Results;
+        total = result.RowCount;
+        loading = false;
+    }
+
+    private void Add()
+    {
+        modalVisible = true;
+        modalTitle = "Soru Kategorisi Ekle";
+    }
+
+    private void Edit(QuestionCategory model)
+    {
+        modalVisible = true;
+        modalTitle = "Soru Kategorisi Düzenle";
+        questionCategory = model;
+        editContext = new EditContext(model);
+    }
+
+    private void Delete(int id)
+    {
+    }
+
+    private void pageIndexChange(PaginationEventArgs args)
+    {
+        pageIndex = args.PageIndex;
+        LoadData();
+    }
+
+    private void Save()
+    {
+        if (editContext.Validate())
+        {
+            if (questionCategory.Id == 0)
+            {
+                questionService.Add(questionCategory);
+            }
+            else
+            {
+                questionService.Edit(questionCategory);
+            }
+            modalVisible = false;
+            LoadData();
+        }
+    }
+
+    private void Cancel()
+    {
+        modalVisible = false;
     }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IQuestionCategoryService questionService { get; set; }
     }
 }
 #pragma warning restore 1591

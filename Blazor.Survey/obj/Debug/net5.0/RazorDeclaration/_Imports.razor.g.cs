@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace BlazorLearn.Shared
+namespace Blazor.Survey
 {
     #line hidden
     using System;
@@ -89,10 +89,10 @@ using AntDesign;
 #line default
 #line hidden
 #nullable disable
-    public partial class MainLayout : LayoutComponentBase
+    public partial class _Imports : System.Object
     {
         #pragma warning disable 1998
-        protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
+        protected void Execute()
         {
         }
         #pragma warning restore 1998

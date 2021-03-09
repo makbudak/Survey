@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace BlazorLearn.Shared
+namespace Blazor.Survey.Shared
 {
     #line hidden
     using System;
@@ -89,7 +89,7 @@ using AntDesign;
 #line default
 #line hidden
 #nullable disable
-    public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class SurveyPrompt : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -97,16 +97,11 @@ using AntDesign;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\Shared\NavMenu.razor"
+#line 12 "D:\Projects\BlazorLearn\BlazorLearn\BlazorLearn\Shared\SurveyPrompt.razor"
        
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+    // Demonstrates how a parent component can supply parameters
+    [Parameter]
+    public string Title { get; set; }
 
 #line default
 #line hidden
