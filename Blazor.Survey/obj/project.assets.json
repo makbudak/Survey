@@ -8282,11 +8282,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\Blazor.Survey\\Blazor.Survey\\Blazor.Survey\\Blazor.Survey.csproj",
+      "projectUniqueName": "D:\\Projects\\Blazor.Survey\\Blazor.Survey\\Blazor.Survey.csproj",
       "projectName": "Blazor.Survey",
-      "projectPath": "D:\\Projects\\Blazor.Survey\\Blazor.Survey\\Blazor.Survey\\Blazor.Survey.csproj",
+      "projectPath": "D:\\Projects\\Blazor.Survey\\Blazor.Survey\\Blazor.Survey.csproj",
       "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\Blazor.Survey\\Blazor.Survey\\Blazor.Survey\\obj\\",
+      "outputPath": "D:\\Projects\\Blazor.Survey\\Blazor.Survey\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
